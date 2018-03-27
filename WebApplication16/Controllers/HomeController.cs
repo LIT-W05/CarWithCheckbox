@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebApplication16.Models;
 
 namespace WebApplication16.Controllers
 {
@@ -10,21 +11,22 @@ namespace WebApplication16.Controllers
     {
         public ActionResult Index()
         {
+            CarTwistDb db = new CarTwistDb(Properties.Settings.Default.ConStr);
+            IEnumerable<Car> cars = db.GetCars();
+            return View(cars);
+        }
+
+        public ActionResult ShowAddForm()
+        {
             return View();
         }
 
-        public ActionResult About()
+
+        public ActionResult AddCar(Car car)
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            CarTwistDb db = new CarTwistDb(Properties.Settings.Default.ConStr);
+            db.AddCar(car);
+            return Redirect("/");
         }
     }
 }
